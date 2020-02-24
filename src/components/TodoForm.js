@@ -17,9 +17,11 @@ function TodoForm(props) {
   const [title, setTitle] = useState(defaultTitle);
   const [desc, setdesc] = useState(defaultdesc);
 
-  const handleSubmit = () => {
-    onSubmit({ title, desc })
-    handleOpen();
+  const handleSubmit = async () => {
+    await onSubmit({ title, desc })
+    await handleOpen()
+    await setTitle('')
+    await setdesc('')
   }
 
   return (

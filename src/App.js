@@ -27,7 +27,7 @@ function App() {
   const todosDelete = index => setTodo(todo.filter((item, i) => index !== i));
 
   const todosCreate = ({ title, desc }) => {
-    const id = todo[todo.length - 1].id + 1;
+    const id = todo.length > 0 ? todo[todo.length - 1].id + 1 : 1
     const data = {
       id: id,
       title: title,
