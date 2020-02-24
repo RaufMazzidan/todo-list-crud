@@ -7,12 +7,18 @@ import {
   CardFooter,
   Row,
   Col,
-  Button
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ListGroupItem
 } from "reactstrap";
 import TodoForm from "./TodoForm";
 
 function TodoItem(props) {
   const [modal, setModal] = useState(null);
+  const [detail, setDetail] = useState(null);
 
   const {
     item: { id, status, title, description } = {},
@@ -26,6 +32,8 @@ function TodoItem(props) {
 
   const modalClose = () => setModal(null);
 
+  const modalDetailToggle = () => setDetail(!detail);
+
   const todosUpdate = ({ title, desc }) => {
     const data = {
       ...props.item,
@@ -37,36 +45,26 @@ function TodoItem(props) {
 
   return (
     <Fragment>
-      <Card style={{ width: "100%" }}>
-        <CardHeader>{title}</CardHeader>
-        <CardBody>
-          <CardText>{description}</CardText>
-        </CardBody>
-        <CardFooter style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Row noGutters>
-            {!completed && (
-              <Col>
-                <Button size="sm" color="success" onClick={() => onChange(id)}>
-                  Completed
-                </Button>
-              </Col>
-            )}
-            &nbsp;
-            <Col>
-              <Button size="sm" color="warning" onClick={() => setModal(index)}>
-                Edit
-              </Button>
-            </Col>
-            &nbsp;
-            <Col>
-              <Button size="sm" color="danger" onClick={() => onDelete(index)}>
-                Delete
-              </Button>
-            </Col>
-          </Row>
-        </CardFooter>
-      </Card>
-      <br/>
+      <ListGroupItem className="item" onClick={modalDetailToggle}>{title}</ListGroupItem>
+      <Modal isOpen={detail} toggle={modalDetailToggle}>
+        <ModalHeader toggle={modalDetailToggle}>{title}</ModalHeader>
+        <ModalBody>{description}</ModalBody>
+        <ModalFooter style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button size="sm" color="success" onClick={() => onChange(id)}>
+            {completed ? "Back To Todo" : "Completed"}
+          </Button>
+          &nbsp;
+          <Button size="sm" color="warning" onClick={() => setModal(index)}>
+            Edit
+          </Button>
+          &nbsp;
+          {!completed &&  (
+            <Button size="sm" color="danger" onClick={() => onDelete(index)}>
+              Delete
+            </Button>
+          )}
+        </ModalFooter>
+      </Modal>
       {modal !== null && modal >= 0 && (
         <TodoForm
           modalTitle="Edit To Do"
