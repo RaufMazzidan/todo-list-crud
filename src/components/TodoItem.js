@@ -1,12 +1,5 @@
 import React, { Fragment, useState } from "react";
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardText,
-  CardFooter,
-  Row,
-  Col,
   Button,
   Modal,
   ModalHeader,
