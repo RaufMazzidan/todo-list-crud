@@ -36,37 +36,45 @@ function TodoItem(props) {
     onEdit(data, index);
   };
 
+  const modalDetail = (
+    <Modal isOpen={detail} toggle={modalDetailToggle}>
+      <ModalHeader toggle={modalDetailToggle}>{title}</ModalHeader>
+      <ModalBody>{description}</ModalBody>
+      <ModalFooter style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button size="sm" color="success" onClick={() => onChange(id)}>
+          {completed ? "Back To Todo" : "Completed"}
+        </Button>
+        &nbsp;
+        <Button size="sm" color="warning" onClick={() => setModal(index)}>
+          Edit
+        </Button>
+        &nbsp;
+        {!completed && (
+          <Button size="sm" color="danger" onClick={() => onDelete(index)}>
+            Delete
+          </Button>
+        )}
+      </ModalFooter>
+    </Modal>
+  );
+
+  const modalEdit = modal !== null && modal >= 0 && (
+    <TodoForm
+      modalTitle="Edit To Do"
+      onSubmit={todosUpdate}
+      open={modal !== null && modal >= 0}
+      handleOpen={modalClose}
+      defaultValue={{ title, description }}
+    />
+  );
+
   return (
     <Fragment>
-      <ListGroupItem className="item" onClick={modalDetailToggle}>{title}</ListGroupItem>
-      <Modal isOpen={detail} toggle={modalDetailToggle}>
-        <ModalHeader toggle={modalDetailToggle}>{title}</ModalHeader>
-        <ModalBody>{description}</ModalBody>
-        <ModalFooter style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button size="sm" color="success" onClick={() => onChange(id)}>
-            {completed ? "Back To Todo" : "Completed"}
-          </Button>
-          &nbsp;
-          <Button size="sm" color="warning" onClick={() => setModal(index)}>
-            Edit
-          </Button>
-          &nbsp;
-          {!completed &&  (
-            <Button size="sm" color="danger" onClick={() => onDelete(index)}>
-              Delete
-            </Button>
-          )}
-        </ModalFooter>
-      </Modal>
-      {modal !== null && modal >= 0 && (
-        <TodoForm
-          modalTitle="Edit To Do"
-          onSubmit={todosUpdate}
-          open={modal !== null && modal >= 0}
-          handleOpen={modalClose}
-          defaultValue={{ title, description }}
-        />
-      )}
+      <ListGroupItem className="item" onClick={modalDetailToggle}>
+        {title}
+      </ListGroupItem>
+      {modalDetail}
+      {modalEdit}
     </Fragment>
   );
 }
